@@ -34,7 +34,7 @@ async def start_command(message: types.Message):
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
         #await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
-        await message.reply(❌Sizga post joylash uchun ruxsat berilmagan! Admin: @iamnot_dtlk, reply=False)
+        await message.reply('❌Sizga post joylash uchun ruxsat berilmagan! Admin: @iamnot_dtlk', reply=False)
 
 dp.register_message_handler(start_command, commands=["start"])
 
