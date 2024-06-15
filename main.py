@@ -33,8 +33,8 @@ async def start_command(message: types.Message):
     if message.from_user.id in allowed_user_ids:
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
-        await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
-
+        #await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
+        await message.reply('<a href="tg://openmessage?user_id=6314938591">❌Sizga post joylash uchun ruxsat berilmagan! Buyurtma berish!</a>',parse_mode="HTML", reply=False)
 
 dp.register_message_handler(start_command, commands=["start"])
 
@@ -85,14 +85,14 @@ async def receive_caption(msg: types.Message, state: FSMContext):
         
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n[Buyurtma berish](tg://openmessage?user_id=6314938591)"
+            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
             media = data['media']
             media[0].caption = caption  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
 
-            await bot.send_media_group(chat_id=group_chat_id, media=media,parse_mode=types.ParseMode.MARKDOWN)
+            await bot.send_media_group(chat_id=group_chat_id, media=media)
             await state.finish()
 
 
