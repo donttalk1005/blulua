@@ -31,8 +31,8 @@ class PostState(StatesGroup):
 
 async def start_command(message: types.Message):
     inline_keyboard = InlineKeyboardMarkup().add(
-                InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
-            )
+        InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
+    )
     if message.from_user.id in allowed_user_ids:
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
@@ -52,6 +52,8 @@ dp.register_message_handler(button_press_handler, lambda msg: msg.text == "🖼Y
 
 
 async def post_new_message(msg: types.Message):
+    async with dp.current_state(user=msg.from_user.id).proxy() as data:
+        data['media'] = []  # Clear the media list
     await msg.answer("Rasm yoki videolarni yuboring, iltimos. Tugatgandan so'ng '✅Tugatdim' knopkasini bosing.")
     await PostState.waiting_for_media.set()
 
@@ -63,8 +65,6 @@ async def receive_media(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         if msg.content_type in [types.ContentType.PHOTO, types.ContentType.VIDEO]:
             async with state.proxy() as data:
-                if 'media' not in data:
-                    data['media'] = []
                 if msg.content_type == types.ContentType.PHOTO:
                     data['media'].append(types.InputMediaPhoto(msg.photo[-1].file_id))
                 elif msg.content_type == types.ContentType.VIDEO:
