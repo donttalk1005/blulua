@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.utils.markdown import hlink
 
 # Replace this with your actual bot token
 token = "7039946168:AAHB9pqu3r4UYOVp05q2k7DfNE2H7DApWOY"
@@ -80,9 +81,10 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 
 
 async def receive_caption(msg: types.Message, state: FSMContext):
+    text = hlink('✅Buyurtma berish', 'tg://openmessage?user_id=6314938591')
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = "#zakazga 🛍️🇨🇳\n" + msg.text + "\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
+            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + "\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n{text}"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
