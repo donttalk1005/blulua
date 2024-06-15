@@ -17,8 +17,8 @@ keyboard.add(types.KeyboardButton("🖼Yangi post"))
 keyboard.add(types.KeyboardButton("✅Tugatdim"))
 
 # Replace this with your actual group chat ID or username
-group_chat_id = -1002224170930
-
+#group_chat_id = -1002224170930
+group_chat_id = -1002225113103
 # Specified user IDs
 allowed_user_ids = [625695297, 6314938591]
 
