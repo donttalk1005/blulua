@@ -30,10 +30,14 @@ class PostState(StatesGroup):
 
 
 async def start_command(message: types.Message):
+    inline_keyboard = InlineKeyboardMarkup().add(
+                InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
+            )
     if message.from_user.id in allowed_user_ids:
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
-        await message.reply('❌Sizga post joylash uchun ruxsat berilmagan! Admin: @iamnot_dtlk', reply=False)
+        await message.reply('Assalomu alaykum! Ushbu botda buyurtma qabul qilinmaydi!', reply=False)
+        await bot.send_message(chat_id=group_chat_id, text="👇👇👇👇👇", reply_markup=inline_keyboard)
 
 
 dp.register_message_handler(start_command, commands=["start"])
@@ -83,7 +87,7 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 async def receive_caption(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            data['caption'] = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
+            data['caption'] = f"#zakazga 🛍️🇨🇳\n\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
         await PostState.waiting_for_price.set()
         await msg.answer("Endi mahsulot narxini yozing.\nMasalan: 99ming+kargo")
 
@@ -94,7 +98,7 @@ dp.register_message_handler(receive_caption, state=PostState.waiting_for_caption
 async def receive_price(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption_with_price = data['caption'] + f"\nNarxi: {msg.text}"
+            caption_with_price = data['caption'] + f"\n💵Narxi: {msg.text}"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
