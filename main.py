@@ -3,7 +3,6 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.utils.markdown import hlink
 from aiogram.types import InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 
 # Replace this with your actual bot token
@@ -19,7 +18,6 @@ keyboard.add(types.KeyboardButton("🖼Yangi post"))
 keyboard.add(types.KeyboardButton("✅Tugatdim"))
 
 # Replace this with your actual group chat ID or username
-#group_chat_id = -1002224170930
 group_chat_id = -1002225113103
 # Specified user IDs
 allowed_user_ids = [625695297, 6314938591]
@@ -28,14 +26,15 @@ allowed_user_ids = [625695297, 6314938591]
 class PostState(StatesGroup):
     waiting_for_media = State()
     waiting_for_caption = State()
+    waiting_for_price = State()
 
 
 async def start_command(message: types.Message):
     if message.from_user.id in allowed_user_ids:
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
-        #await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
         await message.reply('❌Sizga post joylash uchun ruxsat berilmagan! Admin: @iamnot_dtlk', reply=False)
+
 
 dp.register_message_handler(start_command, commands=["start"])
 
@@ -82,24 +81,34 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 
 
 async def receive_caption(msg: types.Message, state: FSMContext):
-    
-        
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
+            data['caption'] = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
+        await PostState.waiting_for_price.set()
+        await msg.answer("Endi mahsulot narxini yozing.\nMasalan: 99ming+kargo")
+
+
+dp.register_message_handler(receive_caption, state=PostState.waiting_for_caption, content_types=types.ContentType.TEXT)
+
+
+async def receive_price(msg: types.Message, state: FSMContext):
+    if msg.from_user.id in allowed_user_ids:
+        async with state.proxy() as data:
+            caption_with_price = data['caption'] + f"\nNarxi: {msg.text}"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
             media = data['media']
-            media[0].caption = caption  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
-            inline_keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
-)
+            media[0].caption = caption_with_price  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
+            inline_keyboard = InlineKeyboardMarkup().add(
+                InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
+            )
             await bot.send_media_group(chat_id=group_chat_id, media=media)
-            await bot.send_message(chat_id=group_chat_id, text="Click the button below:", reply_markup=inline_keyboard)
+            await bot.send_message(chat_id=group_chat_id, text="👇👇👇👇👇", reply_markup=inline_keyboard)
             await state.finish()
 
 
-dp.register_message_handler(receive_caption, state=PostState.waiting_for_caption, content_types=types.ContentType.TEXT)
+dp.register_message_handler(receive_price, state=PostState.waiting_for_price, content_types=types.ContentType.TEXT)
 
 
 async def handle_group_members_join_leave_messages(message: types.Message):
