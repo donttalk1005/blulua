@@ -37,7 +37,7 @@ async def start_command(message: types.Message):
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
         await message.reply('Assalomu alaykum! Ushbu botda buyurtma qabul qilinmaydi!', reply=False)
-        await bot.send_message(chat_id=group_chat_id, text="👇👇👇👇👇", reply_markup=inline_keyboard)
+        await bot.send_message(chat_id=message.chat_id, text="👇👇👇👇👇", reply_markup=inline_keyboard)
 
 
 dp.register_message_handler(start_command, commands=["start"])
