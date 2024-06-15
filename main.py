@@ -34,7 +34,7 @@ async def start_command(message: types.Message):
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
         #await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
-        await message.reply('<a href="tg://openmessage?user_id=6314938591">❌Sizga post joylash uchun ruxsat berilmagan! Buyurtma berish!</a>',parse_mode="HTML", reply=False)
+        await message.reply(❌Sizga post joylash uchun ruxsat berilmagan! Admin: @iamnot_dtlk, reply=False)
 
 dp.register_message_handler(start_command, commands=["start"])
 
@@ -91,9 +91,10 @@ async def receive_caption(msg: types.Message, state: FSMContext):
 
             media = data['media']
             media[0].caption = caption  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
-
+            inline_keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
+)
             await bot.send_media_group(chat_id=group_chat_id, media=media)
-            await bot.send_message('<a href="tg://openmessage?user_id=6314938591">✅Buyurtma berish!✅</a>',parse_mode="HTML", reply=False)
+            await bot.send_message(chat_id=group_chat_id, text="Click the button below:", reply_markup=inline_keyboard)
             await state.finish()
 
 
