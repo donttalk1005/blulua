@@ -93,6 +93,7 @@ async def receive_caption(msg: types.Message, state: FSMContext):
             media[0].caption = caption  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
 
             await bot.send_media_group(chat_id=group_chat_id, media=media)
+            await bot.send_message('<a href="tg://openmessage?user_id=6314938591">✅Buyurtma berish!✅</a>',parse_mode="HTML", reply=False)
             await state.finish()
 
 
