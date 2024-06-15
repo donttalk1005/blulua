@@ -81,17 +81,18 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 
 
 async def receive_caption(msg: types.Message, state: FSMContext):
-    text = hlink('✅Buyurtma berish', 'tg://openmessage?user_id=6314938591')
+    
+        
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n{text}"
+            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n[Buyurtma berish](tg://openmessage?user_id=6314938591)"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
             media = data['media']
             media[0].caption = caption  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
 
-            await bot.send_media_group(chat_id=group_chat_id, media=media)
+            await bot.send_media_group(chat_id=group_chat_id, media=media,parse_mode=types.ParseMode.MARKDOWN)
             await state.finish()
 
 
