@@ -5,7 +5,7 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 # Replace this with your actual bot token
-token = "7400608450:AAGjgiXTWM1tXZ818TjOxLizFjb6_CEhN5g"
+token = "7039946168:AAHB9pqu3r4UYOVp05q2k7DfNE2H7DApWOY"
 bot = Bot(token=token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -17,10 +17,10 @@ keyboard.add(types.KeyboardButton("🖼Yangi post"))
 keyboard.add(types.KeyboardButton("✅Tugatdim"))
 
 # Replace this with your actual group chat ID or username
-group_chat_id = -1002225468308
+group_chat_id = -1002224170930
 
 # Specified user IDs
-allowed_user_ids = [625695297, 209295978]
+allowed_user_ids = [625695297, 6314938591]
 
 
 class PostState(StatesGroup):
@@ -32,7 +32,7 @@ async def start_command(message: types.Message):
     if message.from_user.id in allowed_user_ids:
         await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
     else:
-        await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @Ibrohim_maxmudov", reply=False)
+        await message.reply("❌Sizga post joylash uchun ruxsat berilmagan! Admin bilan bog'lanish: @iamnot_dtlk", reply=False)
 
 
 dp.register_message_handler(start_command, commands=["start"])
@@ -70,7 +70,7 @@ async def receive_media(msg: types.Message, state: FSMContext):
                 if 'media' in data and data['media']:
                     await PostState.waiting_for_caption.set()
                     await msg.answer(
-                        "Endi media uchun mahsulot nomi va izohlarini yozing.\nMasalan: Yangi velosipedlarimiz keldi DIDIT brendidan")
+                        "Endi media uchun mahsulot nomi va izohlarini yozing.\nMasalan: Kofta lux kachestvo 💎 Razmerlari S M L XL 2XL Narxi 💰99ming+kargo")
                 else:
                     await msg.answer(
                         "Hech qanday media topilmadi. Iltimos, media fayl yuboring yoki jarayonni tugating.")
@@ -82,7 +82,7 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 async def receive_caption(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = "✅" + msg.text + "\n\n📍Farg'ona v. Oltiariq tumani\n🚛Yetkazib berish xizmatlarimiz mavjud!\n\n🔰 @ibrohimjonvelos\n☎️ +998906348818"
+            caption = "#zakazga 🛍️🇨🇳\n" + msg.text + "\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
