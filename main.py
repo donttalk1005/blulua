@@ -84,7 +84,7 @@ async def receive_caption(msg: types.Message, state: FSMContext):
     text = hlink('✅Buyurtma berish', 'tg://openmessage?user_id=6314938591')
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + "\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n{text}"
+            caption = f"#zakazga 🛍️🇨🇳\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor\n{text}"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
