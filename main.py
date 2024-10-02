@@ -103,11 +103,9 @@ async def receive_price(msg: types.Message, state: FSMContext):
 
             media = data['media']
             media[0].caption = caption_with_price  # Qo'shimcha faqat birinchi media elementiga qo'shiladi
-            inline_keyboard = InlineKeyboardMarkup().add(
-                InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
-            )
+            
             await bot.send_media_group(chat_id=group_chat_id, media=media)
-            await bot.send_message(chat_id=group_chat_id, text="👇👇👇👇👇", reply_markup=inline_keyboard)
+            
             await state.finish()
 
 
