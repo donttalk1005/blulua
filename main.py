@@ -6,7 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.types import InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
 
 # Replace this with your actual bot token
-token = "7039946168:AAHB9pqu3r4UYOVp05q2k7DfNE2H7DApWOY"
+token = "7719735480:AAF0NoGSWBjQJiY0y-OBi6FhEWAUd9VkmRo"
 bot = Bot(token=token)
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
@@ -19,9 +19,9 @@ keyboard.add(types.KeyboardButton("✅Tugatdim"))
 
 # Replace this with your actual group chat ID or username
 #group_chat_id = -1002225113103
-group_chat_id = -1002224170930
+group_chat_id = -1002259552495
 # Specified user IDs
-allowed_user_ids = [625695297, 6314938591]
+allowed_user_ids = [625695297]
 
 
 class PostState(StatesGroup):
@@ -31,14 +31,12 @@ class PostState(StatesGroup):
 
 
 async def start_command(message: types.Message):
-    inline_keyboard = InlineKeyboardMarkup().add(
-        InlineKeyboardButton("Buyurtma berish", url="tg://openmessage?user_id=6314938591")
-    )
+    
     if message.from_user.id in allowed_user_ids:
-        await message.reply("😊Salom! Post joylash knopkasini bosing.", reply_markup=keyboard)
+        await message.reply("😊Salom! Post joylash knopkasini bosing.")
     else:
-        await message.reply('Assalomu alaykum! Ushbu botda buyurtma qabul qilinmaydi!', reply=False)
-        await message.reply(text="👇👇👇👇👇", reply_markup=inline_keyboard)
+        await message.reply('Assalomu alaykum!', reply=False)
+        await message.reply(text="Admin: @iamnot_dtlk\n Kanal: @kompyuter_savodxonligi_uz")
 
 
 dp.register_message_handler(start_command, commands=["start"])
@@ -76,7 +74,7 @@ async def receive_media(msg: types.Message, state: FSMContext):
                 if 'media' in data and data['media']:
                     await PostState.waiting_for_caption.set()
                     await msg.answer(
-                        "Endi media uchun mahsulot nomi va izohlarini yozing.\nMasalan: Kofta lux kachestvo 💎 Razmerlari S M L XL 2XL Narxi 💰99ming+kargo")
+                        "Endi media uchun mavzu: .")
                 else:
                     await msg.answer(
                         "Hech qanday media topilmadi. Iltimos, media fayl yuboring yoki jarayonni tugating.")
@@ -88,9 +86,9 @@ dp.register_message_handler(receive_media, state=PostState.waiting_for_media, co
 async def receive_caption(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            data['caption'] = f"#zakazga 🛍️🇨🇳\n\n" + msg.text + f"\n\n💰Oldindan to'lov 50%\n✈️Kelish muddati: 8-10kun\n🚗Dostavka xizmati bor"
+            data['caption'] = msg.text
         await PostState.waiting_for_price.set()
-        await msg.answer("Endi mahsulot narxini yozing.\nMasalan: 99ming+kargo")
+        await msg.answer("Endi post matni:")
 
 
 dp.register_message_handler(receive_caption, state=PostState.waiting_for_caption, content_types=types.ContentType.TEXT)
@@ -99,7 +97,7 @@ dp.register_message_handler(receive_caption, state=PostState.waiting_for_caption
 async def receive_price(msg: types.Message, state: FSMContext):
     if msg.from_user.id in allowed_user_ids:
         async with state.proxy() as data:
-            caption_with_price = data['caption'] + f"\n💵Narxi: {msg.text}\n\n📢@blu_lua_boutique"
+            caption_with_price = data['caption'] + f"\n{msg.text}\n\n📢@kompyuter_savodxonligi_uz"
             await msg.answer(
                 "😊Barcha media va izoh guruhga muvaffaqqiyatli jo'natildi. Rahmat!\nYana narsa tashlamoqchi bo'lsangiz 🖼Yangi post knopkasini bosing")
 
